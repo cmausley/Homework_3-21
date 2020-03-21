@@ -19,21 +19,57 @@
 
 
 //MY THIRD STEP: GENERATE WORK WITH THE DOM TO CALL ALL
-const resultEL = document.getElementById('result');
-const lengthEL = document.getElementById('length');
-const uppercaseEL = document.getElementById('uppercase');
-const lowercaseEL = document.getElementById('lowercase');
-const numbersEL = document.getElementById('numbers');
-const symbolsEL = document.getElementById('symbols');
-const generateEL = document.getElementById('generate');
+const resultEl = document.getElementById('result');
+const lengthEl = document.getElementById('length');
+const uppercaseEl = document.getElementById('uppercase');
+const lowercaseEl = document.getElementById('lowercase');
+const numbersEl = document.getElementById('numbers');
+const symbolsEl = document.getElementById('symbols');
+const generateEl = document.getElementById('generate');
 
 //MY FOURTH STEP: GENERATE EVENT LISTENERS
 generateEl.addEventListener('click', () => {
     const length = +lengthEl.value;
-   
+    const hasLower = lowercaseEl.checked;
+    const hasUpper = uppercaseEl.checked;
+    const hasNumber = numbersEl.checked;
+    const hasSymbol = symbolsEl.checked;
 
-    console.log(length)
+    resultEl.innerText = generatePassword(hasLower, hasUpper, hasNumber, hasSymbol, length);
 });
+
+//MY FIFTH STEP: GENERATE FUNCTION FOR PASSWORD
+function generatePassword(lower, upper, number, symbol, length) {
+
+    let generatedPassword = " ";
+
+    const typesCounted = lower + upper + number + symbol;
+
+    // TEST console.log('typesCounted: ', typesCounted);
+
+    const typesArr = [{lower}, {upper}, {number}, {symbol}].filter
+    (item => Object.values(item)[0]
+    );
+
+    //TEST console.log('typesArr: ', typesArr);
+
+    if(typesCounted === 0) {
+        return '';
+    }
+
+    //MY SIXTH STEP: LOOP OVER LENGTH
+    for(let i = 0; i < length; i += typesCounted) {
+        typesArr.forEach(type => {
+            const funcName = Object.keys(type)[0];
+            // TEST console.log('funcName: ', funcName);
+            generatedPassword += randomFunc[funcName]();
+        });
+    }
+
+//MY SEVENTH STEP: GENERATE FINAL PASSWORD GIVEN LENGTH
+    const finalPassword = generatedPassword.slice(0, length);
+    return finalPassword;
+}
 
 //MY SECOND STEP: GENERATE LATER FUNCTION TO CALL INITIAL FUNCTION
 
